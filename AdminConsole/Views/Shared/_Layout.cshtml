@@ -1918,7 +1918,7 @@
          userid = '@HttpContextAccessor.HttpContext.Session.GetString("userid")';
 
         if (userid > 0 && username != '') {
-            $('#lblusername').html('Hello '+username);
+            $('#lblusername').html('HELLO '+username);
 
         } else {
             window.location.href = '../AdminConsole/login';
@@ -1951,7 +1951,7 @@
                     if (result[i].menuUrl == null) {
                         html += result[i].menu + '</button>';
                     } else {
-                        html += '<a  href=' + result[i].menuUrl + '>' + result[i].menu + '</a></button >';
+                        html += '<a  href="../' + result[i].menuUrl + '">' + result[i].menu + '</a></button >';
                     }
 
 
