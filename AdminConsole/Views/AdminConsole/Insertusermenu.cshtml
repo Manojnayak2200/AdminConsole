@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewData["Title"] = "Insertusermenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/jquery/jquery.min.js"></script>
+
+<div class="">
+    <div>
+        <label>Select User :-</label>
+        <select id="ddluser" class="form-control-sm" onchange="loadMenus()">
+        </select>
+
+    </div>
+    <div id="ulmainmenu" class="container container-fluid border">
+
+    </div>
+    <div>
+        <button type="button" class="btn btn-success" id="btnsave">Save</button>
+    </div>
+
+</div>
+<script>
+    var checkbox = '';
+    $(document).ready(function () {
+        LoadUser();
+        loadMenuss();
+    });
+
+    function LoadUser() {
+        $.ajax({
+            url: '../AdminConsole/Listofuser',
+            type: 'get',
+            data: {},
+            dataType: 'JSON',
+            success: function (data) {
+                var result = data;
+                var html = '';
+                for (var i = 0; i < result.length; i++) {
+                    html += '<option value=' + result[i].userId + '>' + result[i].vchUserName + '</option>';
+                }
+                $('#ddluser').html(html);
+
+
+            }
+        })
+    }
+
+    function loadMenuss() {
+        alert();
+        $.ajax({
+            url: '../AdminConsole/listmenuandsubmenuinsert',
+            type: 'POST',
+            data: { 'id': 0 },
+            dataType: 'JSON',
+
+            success: function (data) {
+
+                var result = data;
+                var html = '';
+                var count = 0;
+
+                for (var i = 0; i < result.length; i++) {
+
+                    count++;
+
+
+
+
+                    html += '<h4>' + result[i].menu + '<input type="checkbox" onchange="checkboxcheck(' + result[i].menuId + ')" /></h4>';
+
+                    html += '<ul>';
+                    $.ajax({
+                        url: '../AdminConsole/listmenuandsubmenuinsert',
+                        type: 'POST',
+                        data: { 'id': result[i].menuId },
+                        dataType: 'JSON',
+                        async: false,
+                        success: function (data) {
+                            var convertarray = data;
+                            if (data != '') {
+                                for (var a = 0; a < convertarray.length; a++) {
+
+                                    html += '<li>' + convertarray[a].menu + '<input type="checkbox" onchange="checkboxcheck(' + convertarray[a].menuId + ')" /></li>';
+
+
+
+                                    //html += '<li> <a href=' + convertarray[a].menuUrl + '>' + convertarray[a].menu+'</a></li>';
+
+                                }
+                                html += '</ul>';
+                            }
+                        }
+                    })
+
+
+
+
+                    html += '</div> ';
+
+
+
+
+
+
+                }
+                $('#ulmainmenu').append(html);
+
+
+
+
+            }
+        });
+    }
+
+    function loadSubMenu(obj) {
+        if (obj > 0) {
+
+
+            var datamenu;
+            $.ajax({
+                url: '../AdminConsole/listmenuandsubmenu',
+                type: 'POST',
+                data: { 'id': obj },
+                dataType: 'JSON',
+                async: false,
+                success: function (data) {
+
+                    if (data != '') {
+                        datamenu = data;
+                    }
+                }
+            })
+            return JSON.stringify(datamenu);
+        }
+    }
+
+    function checkboxcheck(obj) {
+
+        checkbox += obj + ',';
+
+
+
+
+
+    }
+
+    $('#btnsave').click(function () {
+        var checkboxx = checkbox.slice(0, -1);
+        var userid = $('#ddluser').val();
+        $.ajax({
+            url: '../AdminConsole/insertMemuToUser',
+            type: 'POST',
+            data: { 'id': userid, 'menu': checkboxx },
+            dataType: 'JSON',
+            async: false,
+            success: function (data) {
+
+                if (data == 1) {
+                    checkbox = '';
+                    alert('Menu inserted');
+
+                }
+            }
+        })
+
+    })
+</script>
+
+

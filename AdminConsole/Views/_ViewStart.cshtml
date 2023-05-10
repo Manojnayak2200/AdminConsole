@@ -1,0 +1,24 @@
+﻿@*@using Microsoft.AspNetCore.Http
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+    @{
+        int userid =Convert.ToInt32( HttpContextAccessor.HttpContext.Session.GetString("userid"));
+        if (userid > 0)
+        {
+            Layout = "~/Views/Shared/_Viewmenu.cshtml";
+        }
+        else
+        {
+            Layout = "_Layout";
+        }
+
+    }*@
+
+
+@{
+   
+        Layout = "_Layout";
+    
+
+}
+

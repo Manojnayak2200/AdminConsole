@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+@*<style>
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #e7e7e7;
+        background-color: #f3f3f3;
+    }
+
+    li {
+        float: left;
+    }
+
+        li a {
+            display: block;
+            color: #666;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+            li a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+            li a.active {
+                color: white;
+                background-color: #04AA6D;
+            }
+</style>*@
+<style>
+    .dropbtn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+    a{
+        background-color:white;
+    }
+</style>
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/jquery/jquery.min.js"></script>
+
+<div class="">
+    <div>
+        <label>Select User :-</label>
+        <select id="ddluser" class="form-control-sm" onchange="loadMenus()">
+        </select>
+
+    </div>
+    <div id="ulmainmenu">
+        @*<ul >
+           
+        </ul>*@
+    </div>
+    
+</div>
+<script>
+    $(document).ready(function () {
+        LoadUser();
+    })
+
+    function LoadUser() {
+        $.ajax({
+            url: '../AdminConsole/Listofuser',
+            type: 'get',
+            data: {},
+            dataType: 'JSON',
+            success: function (data) {
+                var result = data;
+                var html = '';
+                for (var i = 0; i < result.length; i++) {
+                    html += '<option value=' + result[i].userId + '>' + result[i].vchUserName + '</option>';
+                }
+                $('#ddluser').html(html);
+
+
+            }
+        })
+    }
+
+    function loadMenus() {
+        
+        $.ajax({
+            url: '../AdminConsole/listmenuandsubmenu',
+            type: 'POST',
+            data: { 'id': 0, 'userid': $('#ddluser').val()},
+            dataType: 'JSON',
+           
+            success: function (data) {
+                
+                var result = data;
+                var html = '';
+                var count=0;
+                
+                for (var i = 0; i < result.length; i++) {
+
+                    count++;
+
+                    html += '<div class="dropdown">';
+                    html += '<button class="dropbtn">'
+                    if (result[i].menuUrl == null)
+                    {
+                        html += result[i].menu + '</button>';
+                    } else
+                    {
+                        html += '<a style="color: white;" href=' + result[i].menuUrl + '>'+ result[i].menu +'</a></button >';
+                    }
+
+                        
+
+                        html += '<div class="dropdown-content">';
+                    //html += '<li id="id' + count + '"> <a href="#">' + result[i].menu + '</a>';
+                    
+                    ////let submenuitem = JSON.parse("[" + loadSubMenu(result[i].menuId) + "]");
+                    //   //for (var o = 0; o < submneu.length; o++) {
+                    //    alert();
+                    //}
+                    //var submneu = loadSubMenu(result[i].menuId);
+                    //var convertarray = JSON.parse("[" + submneu + "]");
+                    //if (submneu != '') {
+                    //    for (var a = 0; a < convertarray.length; a++) {
+
+                        
+                    //        html += '<ul>';
+                    //        html += '<li> <a href=' + convertarray[0][a].menuUrl + '>' + convertarray[0][a].menu+'</a></li>';
+                    //        html += '</ul>';
+                    //    }
+                    //}
+
+
+                    $.ajax({
+                        url: '../AdminConsole/listmenuandsubmenu',
+                        type: 'POST',
+                        data: { 'id': result[i].menuId, 'userid': $('#ddluser').val() },
+                        dataType: 'JSON',
+                        async: false,
+                        success: function (data) {
+                            var convertarray = data;
+                            if (data != '') {
+                                for (var a = 0; a < convertarray.length; a++)
+                                {
+                                    
+                                    html += '<a href="#">' + convertarray[a].menu +'</a>';
+                                   
+
+                                    //html += '<ul>';
+                                    //html += '<li> <a href=' + convertarray[a].menuUrl + '>' + convertarray[a].menu+'</a></li>';
+                                    //html += '</ul>';
+                               }
+                            }
+                        }
+                    })
+
+                    
+                 
+                    html += '</div>';
+                    html +='</div> ';
+
+
+                  
+
+
+
+                }
+                $('#ulmainmenu').html(html);
+
+
+
+
+            }
+        })
+    }
+
+    function loadSubMenu(obj) {
+        if (obj > 0) {
+
+        
+        var datamenu;
+        $.ajax({
+            url: '../AdminConsole/listmenuandsubmenu',
+            type: 'POST',
+            data: { 'id': obj },
+            dataType: 'JSON',
+            async: false,
+            success: function (data) {
+                
+                if (data != '') {
+                    datamenu= data;
+                }
+            }
+        })
+        return JSON.stringify(datamenu);
+        }
+    }
+</script>
+

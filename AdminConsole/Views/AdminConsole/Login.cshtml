@@ -1,0 +1,121 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        body, html {
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .bg-img {
+            /* The image used */
+           // background-image: url("/wwwroot/img_nature.jpg");
+            min-height: 100%;
+            /* Center and scale the image nicely */
+         /*   background-position: center;*/
+         background-color:darkgray;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        /* Add styles to the form container */
+        .container {
+            position: absolute;
+            right: 0;
+            margin: 20px;
+            max-width: 300px;
+            padding: 16px;
+            background-color: white;
+        }
+
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+
+            input[type=text]:focus, input[type=password]:focus {
+                background-color: #ddd;
+                outline: none;
+            }
+
+        /* Set a style for the submit button */
+        .btn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+
+            .btn:hover {
+                opacity: 1;
+            }
+    </style>
+</head>
+<body>
+
+   
+    <div class="bg-img">
+        <div  class="container">
+            <h1>Login</h1>
+
+            <label for="email"><b>User Name</b></label>
+            <input type="text" placeholder="Enter User Name" id="txtuname" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" id="txtpsw" required>
+
+            <button type="submit" class="btn" onclick="loagin()">Login</button>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+
+    function loagin() {
+        var uname = $('#txtuname').val();
+        var password = $('#txtpsw').val();
+        $.ajax({
+            url: '../AdminConsole/Loginsuccess',
+            type: 'POST',
+            data: { 'uname': uname, 'password': password },
+            dataType: 'JSON',
+
+            success: function (data) {
+                var result = data;
+                if (result == 1) {
+                    alert('Invalid User Name and Password !!');
+                }
+                else if (result == 2) {
+                    alert('Something went wrong !!');
+                } else {
+                    location.href = result;
+                }
+
+            }
+        });
+    }
+</script>
