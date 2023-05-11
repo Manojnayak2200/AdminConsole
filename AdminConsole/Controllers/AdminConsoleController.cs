@@ -111,13 +111,19 @@ namespace AdminConsole.Controllers
         }
         [HttpPost]
         
-        public IActionResult Loginsuccess(string uname,string password)
+        public IActionResult Loginsuccess(string uname,string password,string Captcha)
         {
             Log.SaveLogErrorOrMesage("AdminConsole", "Loginsuccess", "Login Method Call");
             string url = "";
             Commonclass obj = new Commonclass();
             try
             {
+                string captchsession = HttpContext.Session.GetString("captcha");
+                if(captchsession != Captcha)
+                {
+                    return Json(4);
+                }
+
                 obj = _irepository.userlogin(uname, password);
                 if(obj != null)
                 {
@@ -159,6 +165,8 @@ namespace AdminConsole.Controllers
             {
                 HttpContext.Session.Remove("Username");
                 HttpContext.Session.Remove("userid");
+                HttpContext.Session.Remove("captcha");
+                
                 url = "../AdminConsole/login";
             }
             catch(Exception ex)
@@ -167,6 +175,34 @@ namespace AdminConsole.Controllers
             }
             
             return Json(url);
+        }
+
+        public IActionResult captchanumber()
+        {
+            Random res = new Random();
+
+            // String that contain both alphabets and numbers
+            String str = "abcdefghijklmnopqrstuvwxyz0123456789";
+            int size = 6;
+
+            // Initializing the empty string
+            String randomstring = "";
+
+            for (int i = 0; i < size; i++)
+            {
+
+                // Selecting a index randomly
+                int x = res.Next(str.Length);
+
+                // Appending the character at the 
+                // index to the random alphanumeric string.
+                randomstring = randomstring + str[x];
+            }
+
+            //Console.WriteLine("Random alphanumeric String:" + randomstring);
+
+            HttpContext.Session.SetString("captcha", randomstring);
+            return Json(randomstring);
         }
       
         

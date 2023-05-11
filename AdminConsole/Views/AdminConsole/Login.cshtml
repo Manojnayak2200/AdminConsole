@@ -73,6 +73,17 @@
             .btn:hover {
                 opacity: 1;
             }
+
+
+        .noselect {
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+        }
     </style>
 </head>
 <body>
@@ -87,6 +98,18 @@
 
             <label for="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" id="txtpsw" required>
+            <div>
+                <div class="row">
+                    <div class="col-4  p-4" > 
+                        <label class="bg-light noselect" style="font-size: 25px;" id="lblcaptcha"></label>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" placeholder="Enter Captcha" id="txtcaptcha" required>
+                    </div>
+                    
+                </div>
+               
+            </div>
 
             <button type="submit" class="btn" onclick="loagin()">Login</button>
         </div>
@@ -98,15 +121,35 @@
     function loagin() {
         var uname = $('#txtuname').val();
         var password = $('#txtpsw').val();
+        var captcha = $('#txtcaptcha').val();
+
+
+        if ( uname == '') {
+            alert('Enter User Name ');
+            return false;
+        }
+        else if (password == '') {
+            alert('Enter Password ');
+            return false;
+        }
+        else if (captcha == '') {
+            alert('Enter Captcha ');
+            return false;
+        }
+
         $.ajax({
             url: '../AdminConsole/Loginsuccess',
             type: 'POST',
-            data: { 'uname': uname, 'password': password },
+            data: { 'uname': uname, 'password': password, 'Captcha': captcha},
             dataType: 'JSON',
 
             success: function (data) {
                 var result = data;
-                if (result == 1) {
+                if (result == 4) {
+                    alert('Invalid Captcha');
+                    return false;
+                }
+               else if(result == 1) {
                     alert('Invalid User Name and Password !!');
                 }
                 else if (result == 2) {
@@ -118,4 +161,23 @@
             }
         });
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '../AdminConsole/captchanumber',
+            type: 'GET',
+            data: {  },
+            dataType: 'JSON',
+
+            success: function (data) {
+                var result = data;
+                $('#lblcaptcha').html(result);
+
+            }
+        });
+    })
+    
+
 </script>
