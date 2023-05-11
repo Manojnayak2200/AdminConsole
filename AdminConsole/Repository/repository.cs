@@ -14,6 +14,13 @@ namespace AdminConsole.Repository
     public class repository : Connection, Irepository
     {
         SqlConnection con = connectioncreate();
+        public repository()
+        {
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
+        }
 
         public int inserMenuforUser(Commonclass commonclass)
         {
@@ -97,7 +104,7 @@ namespace AdminConsole.Repository
             Commonclass comobj = new Commonclass();
             try
             {
-                comobj = con.Query<Commonclass>("  select * from  m_user where vchusername='"+username+"' and vchPassword='"+password+"' and intDeletedflag=0", commandType: CommandType.Text).FirstOrDefault();
+                comobj = con.Query<Commonclass>(" select * from  m_user where vchusername='"+username+"' and vchPassword='"+password+"' and intDeletedflag=0", commandType: CommandType.Text).FirstOrDefault();
             }
             catch(Exception ex)
             {

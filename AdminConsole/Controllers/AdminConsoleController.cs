@@ -131,7 +131,7 @@ namespace AdminConsole.Controllers
                     HttpContext.Session.SetString("userid", obj.userId.ToString());
                     url = " /AdminConsole/Dashboard";
 
-                    Log.SaveLogErrorOrMesage("AdminConsole", "Loginsuccess", ""+obj.vchUserName+" Login Success ");
+                    Log.SaveLogErrorOrMesage("AdminConsole", "Loginsuccess", ""+obj.vchUserName+ " Login Success ");
 
                     return Json(url);
                 }
@@ -182,8 +182,8 @@ namespace AdminConsole.Controllers
             Random res = new Random();
 
             // String that contain both alphabets and numbers
-            String str = "abcdefghijklmnopqrstuvwxyz0123456789";
-            int size = 6;
+            String str = "abcdefghijklmnopqrstuvwxyz@#$%&0123456789";
+            int size = 4;
 
             // Initializing the empty string
             String randomstring = "";

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AdminConsole</title>
-
+    <script src="~/jquery/jquery.min.js"></script>
     <script src="~/bootstrap/js/bootstrap.min.js"></script>
     <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -1858,7 +1858,7 @@
 
         <footer class="border-top footer text-muted">
             <div class="container">
-                &copy; 2023 - AdminConsole - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                &copy; 2023 
             </div>
         </footer>
     </div>
@@ -1918,13 +1918,14 @@
          userid = '@HttpContextAccessor.HttpContext.Session.GetString("userid")';
 
         if (userid > 0 && username != '') {
-            $('#lblusername').html('HELLO '+username);
+            $('#lblusername').html('HELLO ' + username);
+            loadMenus();
 
         } else {
             window.location.href = '../AdminConsole/login';
         }
 
-        loadMenus();
+        
     })
 
 
