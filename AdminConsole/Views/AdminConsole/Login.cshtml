@@ -147,6 +147,7 @@
                 var result = data;
                 if (result == 4) {
                     alert('Invalid Captcha');
+                    loadCatpch();
                     return false;
                 }
                else if(result == 1) {
@@ -165,10 +166,14 @@
 
 <script>
     $(document).ready(function () {
+        loadCatpch();
+    })
+
+    function loadCatpch() {
         $.ajax({
             url: '../AdminConsole/captchanumber',
             type: 'GET',
-            data: {  },
+            data: {},
             dataType: 'JSON',
 
             success: function (data) {
@@ -177,7 +182,7 @@
 
             }
         });
-    })
+    }
     
 
 </script>
