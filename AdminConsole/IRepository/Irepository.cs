@@ -17,5 +17,11 @@ namespace AdminConsole.IRepository
       int inserMenuforUser(Commonclass commonclass);
         Commonclass userlogin(string username, string password);
 
+        List<Commonclass> ListOfMainMenu();
+
+       int insertMainmenu(Commonclass Commonclass);
+        int deleteMainmenu(int menuid);
+        Commonclass getmenubymenuid(int id);
+
     }
 }

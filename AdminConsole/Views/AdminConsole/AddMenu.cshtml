@@ -1,0 +1,81 @@
+﻿@model AdminConsole.Models.Commonclass
+
+@{
+    ViewData["Title"] = "AddMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = 0;
+}
+<script src="~/jquery/jquery.min.js"></script>
+
+<div class="container bg-light border">
+    @using (Html.BeginForm("InserMainMenu", "AdminConsole", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.MenuId);
+        <label>Enter Menu Name</label>
+        @Html.TextBoxFor(m => m.Menu, new {@class="form-control", placeholder = "Enter Main Menu Name" })
+       
+        <label>Enter Menu URL</label>
+        @Html.TextBoxFor(m => m.MenuUrl, new { @class = "form-control", placeholder = "Enter Main Menu URL" })
+       
+        <div>
+            <button type="submit" class="btn btn-success" id="btnsave">Save</button>
+        </div>
+
+    }
+</div>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.MenuId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu)
+            </th>
+         
+            <th>
+                @Html.DisplayNameFor(model => model.MenuUrl)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in ViewBag.model) {
+    count++;
+        <tr>
+          
+            <td>
+                @count
+            </td>
+            <td>
+               @item.Menu
+            </td>
+            
+            <td>
+                @item.MenuUrl
+            </td>
+           
+            <td>
+                @Html.ActionLink("Edit", "Editmenu", new { id =item.MenuId  },new  { @class = "btn btn-warning"}) |
+              
+                @Html.ActionLink("Delete", "Deletemainmenu", new {  id=item.MenuId }, new {@class="btn btn-danger", onclick = "return confirm('Are you sure want to Delete ?');" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script>
+    $('#btnsave').click(function () {
+        var txtmenu = $('#Menu').val();
+        if (txtmenu == '') {
+            $('#Menu').focus();
+            alert('Enter Main Menu Name !!');
+            return false;
+        }
+        
+    })
+</script>

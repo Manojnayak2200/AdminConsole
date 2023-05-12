@@ -22,6 +22,40 @@ namespace AdminConsole.Repository
             }
         }
 
+        public int deleteMainmenu(int menuid)
+        {
+            int result = 0;
+            try
+            {
+                result = con.Query<int>(" delete from M_T_AdminConsole where MenuId="+menuid+"", commandType: CommandType.Text).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
+        }
+
+        public Commonclass getmenubymenuid(int id)
+        {
+            Commonclass list = new Commonclass();
+            try
+            {
+
+
+
+
+                list = con.Query<Commonclass>(" select * from M_T_AdminConsole where Submenuid=0 and  MenuId="+id+" ", commandType: CommandType.Text).FirstOrDefault();
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return list;
+        }
+
         public int inserMenuforUser(Commonclass commonclass)
         {
             int result = 0;
@@ -38,6 +72,39 @@ namespace AdminConsole.Repository
             return result;
         }
 
+        public int insertMainmenu(Commonclass Commonclass)
+        {
+            int result = 0;
+            try
+            {
+                result = con.Query<int>("insert into M_T_AdminConsole(Submenuid, Menu, MenuUrl)values(0, '"+Commonclass.Menu+"', '"+Commonclass.MenuUrl+"' )" , commandType: CommandType.Text).FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return result;
+        }
+
+        public List<Commonclass> ListOfMainMenu()
+        {
+            List<Commonclass> list = new List<Commonclass>();
+            try
+            {
+
+
+
+
+                list = con.Query<Commonclass>(" select * from M_T_AdminConsole where Submenuid=0 ", commandType: CommandType.Text).ToList();
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return list;
+        }
 
         public List<Commonclass> listofmenuandsubmenu(int submenuid, int userid)
         {

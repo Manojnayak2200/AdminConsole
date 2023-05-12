@@ -24,12 +24,13 @@
 <script>
     var checkboxx = '';
     $(document).ready(function () {
-
-        //LoadUser();
+       
         setTimeout(LoadUser, 2000);
         setTimeout(loadMenuss, 3000);
         
-        //loadMenuss();
+        
+       
+        
     });
 
     function LoadUser() {
@@ -93,15 +94,17 @@
                                     //html += '<li> <a href=' + convertarray[a].menuUrl + '>' + convertarray[a].menu+'</a></li>';
 
                                 }
-                                html += '</ul>';
+                                
                             }
+                            html += '</ul>';
+                            
                         }
                     })
 
 
 
 
-                    html += '</div> ';
+                    //html += '</div> ';
 
 
 
@@ -113,9 +116,11 @@
 
 
 
-
+               
             }
+            
         });
+        
     }
 
     function loadSubMenus(obj) {

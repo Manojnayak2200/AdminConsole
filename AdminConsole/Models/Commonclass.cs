@@ -20,7 +20,7 @@ namespace AdminConsole.Models
         public int MenuId { get; set; }
         public string Menu { get; set; }
         public int Submenuid { get; set; }
-        public string MenuUrl { get; set; }
+        public string MenuUrl { get; set; } = null;
         public int intuserid { get; set; }
         public int intPermission { get; set; }
 

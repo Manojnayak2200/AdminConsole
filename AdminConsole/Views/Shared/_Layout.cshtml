@@ -1850,7 +1850,9 @@
         </div>
         <div class="">
             <div class="container">
+                <img src="~/loder.gif" id="loder" />
                 <main role="main" class="pb-3">
+
                     @RenderBody()
                 </main>
             </div>
@@ -1912,6 +1914,7 @@
     var userid = 0;
     $(document).ready(function () {
 
+        $('#loder').hide();
 
          var username = '@HttpContextAccessor.HttpContext.Session.GetString("Username")';
 
@@ -1922,17 +1925,17 @@
             loadMenus();
 
         } else {
-            window.location.href = '../AdminConsole/login';
+            window.location.href = '@Url.Action("login", "AdminConsole")';
         }
 
-        
+
     })
 
 
     function loadMenus() {
 
         $.ajax({
-            url: '../AdminConsole/listmenuandsubmenu',
+            url:'@Url.Action("listmenuandsubmenu", "AdminConsole")' ,
             type: 'POST',
             data: { 'id': 0, 'userid': userid },
             dataType: 'JSON',
@@ -1949,7 +1952,7 @@
 
                     html += '<div class="dropdown">';
                     html += '<button class="dropbtn">'
-                    if (result[i].menuUrl == null) {
+                    if (result[i].menuUrl == '' ) {
                         html += result[i].menu + '</button>';
                     } else {
                         html += '<a  href="../' + result[i].menuUrl + '">' + result[i].menu + '</a></button >';
@@ -1961,7 +1964,7 @@
 
 
                     $.ajax({
-                        url: '../AdminConsole/listmenuandsubmenu',
+                        url:'@Url.Action("listmenuandsubmenu", "AdminConsole")' ,
                         type: 'POST',
                         data: { 'id': result[i].menuId, 'userid': userid },
                         dataType: 'JSON',
@@ -2006,7 +2009,7 @@
 
             var datamenu;
             $.ajax({
-                url: '../AdminConsole/listmenuandsubmenu',
+                url:'@Url.Action("listmenuandsubmenu", "AdminConsole")' ,
                 type: 'POST',
                 data: { 'id': obj },
                 dataType: 'JSON',
@@ -2024,7 +2027,7 @@
 
     function logout() {
         $.ajax({
-            url: '../AdminConsole/Logoutuser',
+            url:  '@Url.Action("Logoutuser", "AdminConsole")',
             type: 'GET',
             data: { },
             dataType: 'JSON',
@@ -2033,5 +2036,9 @@
                 window.location.href = data;
             }
         });
+    }
+
+    function loder() {
+      
     }
 </script>

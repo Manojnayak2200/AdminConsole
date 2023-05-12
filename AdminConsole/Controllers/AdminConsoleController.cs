@@ -204,7 +204,46 @@ namespace AdminConsole.Controllers
             HttpContext.Session.SetString("captcha", randomstring);
             return Json(randomstring);
         }
-      
+
+        public IActionResult AddMenu()
+        {
+           
+            List<Commonclass> list = new List<Commonclass>();
+
+            list = _irepository.ListOfMainMenu();
+            ViewBag.model = list;
+            return View();
+        }
+
+        public IActionResult Editmenu(int id)
+        {
+            Commonclass commonclass = new Commonclass();
+            if (id > 0)
+            {
+                commonclass = _irepository.getmenubymenuid(id);
+            }
+
+            List<Commonclass> list = new List<Commonclass>();
+
+            list = _irepository.ListOfMainMenu();
+            ViewBag.model = list;
+            return View("AddMenu", commonclass);
+        }
+      [HttpPost]
+      public IActionResult InserMainMenu(Commonclass commonclass)
+        {
+            int result = 0;
+            result = _irepository.insertMainmenu(commonclass);
+            
+            return RedirectToAction("AddMenu");
+        }
+
+        public IActionResult Deletemainmenu(int id)
+        {
+            int result = _irepository.deleteMainmenu(id);
+            return RedirectToAction("AddMenu");
+        }
+
         
     }
 }
